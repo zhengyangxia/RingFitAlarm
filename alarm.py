@@ -1,4 +1,6 @@
+from sys import platform as platform_name
 import os
+from win10toast import ToastNotifier
 import requests
 import time
 from bs4 import BeautifulSoup
@@ -6,9 +8,13 @@ from selenium import webdriver
 from config import *
 
 def notify(title, text):
-    os.system("""
+	if platform_name == "darwin":
+    	os.system("""
               osascript -e 'display notification "{}" with title "{}"'
               """.format(text, title))
+	elif platform_name == "win32" or platform_name == "win64":
+		toast = ToastNotifier()
+		toast.show_toast("Target", "sold out")
 
 # notify("Bestbuy", "Ring Fit Adventure is available at Bestbuy!")
 def check_bestbuy(apikey):
@@ -25,7 +31,7 @@ def check_bestbuy(apikey):
 
 
 def check_target(options):	
-	driver = webdriver.Chrome(chrome_options=options)
+	driver = webdriver.Chrome(options=options)
 	driver.get(target_url)
 	time.sleep(5)
 	content = driver.page_source

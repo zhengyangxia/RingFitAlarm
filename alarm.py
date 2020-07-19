@@ -19,9 +19,9 @@ def notify(title, text):
 		toast.show_toast("Target", "sold out")
 
 # notify("Bestbuy", "Ring Fit Adventure is available at Bestbuy!")
-def check_bestbuy(apikey):
+def check_bestbuy():
 	
-	url = "https://api.bestbuy.com/v1/products(sku="+bestbuy_sku+")?apiKey="+bestbuy_api+"&sort=onlineAvailability.asc&show=onlineAvailability&format=json"
+	url = "https://api.bestbuy.com/v1/products(sku="+bestbuy_sku+")?apiKey="+bestbuy_key+"&sort=onlineAvailability.asc&show=onlineAvailability&format=json"
 	r = requests.get(url)
 	r_json = r.json()
 	timestamp = time.ctime(time.time())
@@ -57,7 +57,7 @@ options = webdriver.ChromeOptions()
 options.add_argument("headless")
 while True:
 	if use_bestbuy:
-		check_bestbuy(apikey)
+		check_bestbuy()
 	if use_target:
 		check_target(options)
 	time.sleep(check_interval)

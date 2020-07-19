@@ -18,10 +18,10 @@ def check_bestbuy(apikey):
 	r_json = r.json()
 	timestamp = time.ctime(time.time())
 	if r_json['products'][0]['onlineAvailability']:
-		print "available at bestbuy at "+timestamp
+		print("available at bestbuy at "+timestamp)
 		notify("Bestbuy", bestbuy_url)
 	else:
-		print "sold out at bestbuy at "+timestamp
+		print("sold out at bestbuy at "+timestamp)
 
 
 def check_target(options):	
@@ -39,10 +39,10 @@ def check_target(options):
 		target = target.find("a")
 	timestamp = time.ctime(time.time())
 	if target and target.text == target_store:
-		print "available at target at "+timestamp
+		print("available at target at "+timestamp)
 		notify("Target", target_url)
 	else:
-		print "sold out at target at "+timestamp
+		print("sold out at target at "+timestamp)
 
 
 options = webdriver.ChromeOptions()

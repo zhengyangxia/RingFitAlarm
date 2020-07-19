@@ -1,6 +1,8 @@
 from sys import platform as platform_name
-import os
-from win10toast import ToastNotifier
+if platform_name == "darwin":
+	import os
+elif platform_name == "win32" or platform_name == "win64":
+	from win10toast import ToastNotifier
 import requests
 import time
 from bs4 import BeautifulSoup

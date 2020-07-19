@@ -9,7 +9,7 @@ from config import *
 
 def notify(title, text):
 	if platform_name == "darwin":
-    	os.system("""
+                os.system("""
               osascript -e 'display notification "{}" with title "{}"'
               """.format(text, title))
 	elif platform_name == "win32" or platform_name == "win64":
@@ -35,7 +35,7 @@ def check_target(options):
 	driver.get(target_url)
 	time.sleep(5)
 	content = driver.page_source
-	with open('target.html', 'w') as f:
+	with open('target.html', 'wb') as f:
 		f.write(content.encode('utf-8'))
 	driver.quit()
 

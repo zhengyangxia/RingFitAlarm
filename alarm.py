@@ -27,7 +27,7 @@ def check_bestbuy(driver):
 	end = time.time()
 	with open('bestbuy.html', 'wb') as f:
 		f.write(content.encode('utf-8'))
-	driver.quit()
+	# driver.quit()
 	
 	soup = BeautifulSoup(open("bestbuy.html"), features="lxml")
 	
@@ -37,8 +37,8 @@ def check_bestbuy(driver):
 		if button.text == "Add to Cart":
 			print("available at bestbuy at "+timestamp)
 			notify("Bestbuy", bestbuy_url)
-		elif button.text == "Sold Out":
-			print("sold out at bestbuy at "+timestamp)
+	else:
+		print("sold out at bestbuy at "+timestamp)
 
 
 def check_target(driver):
@@ -47,7 +47,7 @@ def check_target(driver):
 	content = driver.page_source
 	with open('target.html', 'wb') as f:
 		f.write(content.encode('utf-8'))
-	driver.quit()
+	# driver.quit()
 
 	soup = BeautifulSoup(open("target.html"), features="lxml")
 	target = soup.find("div", attrs={"data-test": "orderPickupMessage"})

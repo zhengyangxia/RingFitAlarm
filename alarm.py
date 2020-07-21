@@ -19,21 +19,29 @@ def notify(title, text):
 		toast.show_toast("Target", "sold out")
 
 # notify("Bestbuy", "Ring Fit Adventure is available at Bestbuy!")
-def check_bestbuy():
+def check_bestbuy(driver):
+	start = time.time()
+	driver.get(bestbuy_url)
+	mid = time.time()
+	content = driver.page_source
+	end = time.time()
+	with open('bestbuy.html', 'wb') as f:
+		f.write(content.encode('utf-8'))
+	driver.quit()
 	
-	url = "https://api.bestbuy.com/v1/products(sku="+bestbuy_sku+")?apiKey="+bestbuy_key+"&sort=onlineAvailability.asc&show=onlineAvailability&format=json"
-	r = requests.get(url)
-	r_json = r.json()
+	soup = BeautifulSoup(open("bestbuy.html"), features="lxml")
+	
+	button = soup.find("button", attrs={"class": "btn btn-primary btn-lg btn-block btn-leading-ficon add-to-cart-button"})
 	timestamp = time.ctime(time.time())
-	if r_json['products'][0]['onlineAvailability']:
-		print("available at bestbuy at "+timestamp)
-		notify("Bestbuy", bestbuy_url)
-	else:
-		print("sold out at bestbuy at "+timestamp)
+	if button:
+		if button.text == "Add to Cart":
+			print("available at bestbuy at "+timestamp)
+			notify("Bestbuy", bestbuy_url)
+		elif button.text == "Sold Out":
+			print("sold out at bestbuy at "+timestamp)
 
 
-def check_target(options):	
-	driver = webdriver.Chrome(options=options)
+def check_target(driver):
 	driver.get(target_url)
 	time.sleep(5)
 	content = driver.page_source
@@ -51,13 +59,15 @@ def check_target(options):
 		notify("Target", target_url)
 	else:
 		print("sold out at target at "+timestamp)
+	end = time.time()
 
 
 options = webdriver.ChromeOptions()
 options.add_argument("headless")
+driver = webdriver.Chrome(options=options)
 while True:
 	if use_bestbuy:
-		check_bestbuy()
+		check_bestbuy(driver)
 	if use_target:
-		check_target(options)
+		check_target(driver)
 	time.sleep(check_interval)
